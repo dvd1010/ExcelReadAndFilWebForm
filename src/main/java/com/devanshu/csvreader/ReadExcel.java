@@ -27,15 +27,10 @@ public class ReadExcel {
 
 	public static final String URL = "";
 	public static final String FILE_PATH = "";
-	public static Map<Integer, String> formMap;
+	public static Map<String, String> headersMap;
 	static{
-		formMap = new TreeMap<Integer, String>();
-		formMap.put(0, "registrant.givenName");
-		formMap.put(1, "registrant.surname");
-		formMap.put(2, "registrant.email");
-		formMap.put(3, "registrant.jobTitle");
-		formMap.put(4, "registrant.organization");
-		formMap.put(5, "registrant.phone");
+		headersMap = new TreeMap<String, String>();
+		headersMap.put("param", "value");
 	}
 	
 	public static void main(String[] args){
@@ -66,16 +61,12 @@ public class ReadExcel {
 	        if (headerRow == null) {
 	            throw new Exception("Worksheet does not contain Header in first Row.");
 	        }
-	        for(Cell cell : headerRow){
-	        	headerMap.put(cell.getColumnIndex(), cell.getStringCellValue());
-	        }
-	        
 	        while(iterator.hasNext()){
 	        	List <NameValuePair> nameValuePairs = new ArrayList <NameValuePair>();  
 	        	Row row = iterator.next();
 	        	for(Cell cell : row){
-	        		if(formMap.get(cell.getColumnIndex()) != null)
-	        			nameValuePairs.add(new BasicNameValuePair(formMap.get(cell.getColumnIndex()), cell.getStringCellValue())); 
+	        		if(headersMap.get(cell.getColumnIndex()) != null)
+	        			nameValuePairs.add(new BasicNameValuePair(headersMap.get(cell.getColumnIndex()), cell.getStringCellValue())); 
 	        	}
 	        	if(!nameValuePairs.isEmpty())
 		        	post.setEntity(new UrlEncodedFormEntity(nameValuePairs, HTTP.UTF_8));
